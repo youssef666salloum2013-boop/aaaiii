@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Logo Design KI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0d0f14;color:white}
+header{padding:22px;text-align:center;background:linear-gradient(135deg,#171b25,#0d0f14);border-bottom:1px solid #292e3a}
+header h1{margin:0;font-size:28px}header p{color:#9da5b5;margin:7px 0 0}.container{max-width:1000px;margin:auto;padding:20px}
+.panel{background:#151922;border:1px solid #292e3a;border-radius:18px;padding:20px;margin-bottom:20px}
+label{display:block;margin:14px 0 7px;font-weight:bold}
+input,select,textarea{width:100%;padding:13px;border-radius:11px;border:1px solid #343b4b;background:#0d1017;color:white;font-size:16px}
+textarea{min-height:100px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+button{border:0;border-radius:12px;padding:14px 18px;margin-top:18px;font-size:16px;font-weight:bold;cursor:pointer;background:#fff;color:#111}
+.generate{width:100%;background:linear-gradient(135deg,#7c5cff,#3da9ff);color:white}.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.logoCard{background:#fff;color:#111;border-radius:18px;padding:15px;text-align:center;overflow:hidden}.logoCard svg{width:100%;height:240px;display:block;border-radius:12px}
+.logoName{font-weight:bold;font-size:18px;margin-top:12px}.small{color:#777;font-size:13px}.cardButtons{display:flex;gap:8px}.cardButtons button{flex:1;margin-top:10px;padding:10px;font-size:14px}
+.status{text-align:center;color:#9da5b5;margin:15px 0}@media(max-width:650px){.row{grid-template-columns:1fr}header h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header><h1>🤖 Logo Design KI</h1><p>Erstelle einzigartige Logo-Konzepte aus deinen Ideen.</p></header>
+<div class="container">
+<div class="panel">
+<label>Firmen-/Projektname</label><input id="name" placeholder="z.B. CCG">
+<label>Logo-Beschreibung</label><textarea id="description" placeholder="z.B. Ein modernes Gaming-Logo mit einem Blitz und futuristischem Stil"></textarea>
+<div class="row">
+<div><label>Stil</label><select id="style"><option>Modern</option><option>Minimalistisch</option><option>Gaming</option><option>Futuristisch</option><option>Elegant</option><option>Tech</option><option>Minecraft</option><option>Cartoon</option></select></div>
+<div><label>Form</label><select id="shape"><option>Rund</option><option>Quadratisch</option><option>Sechseck</option><option>Schild</option><option>Diamant</option></select></div>
+</div>
+<div class="row"><div><label>Hauptfarbe</label><input type="color" id="color" value="#7c5cff"></div><div><label>Hintergrund</label><input type="color" id="background" value="#111111"></div></div>
+<button class="generate" onclick="generateLogos()">✨ 4 Logo-Konzepte generieren</button>
+</div>
+<div class="status" id="status">Noch kein Logo erstellt.</div><div id="results" class="results"></div>
+</div>
+<script>
+function escapeXML(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;")}
+function darken(h){let r=Math.max(0,parseInt(h.substr(1,2),16)-45),g=Math.max(0,parseInt(h.substr(3,2),16)-45),b=Math.max(0,parseInt(h.substr(5,2),16)-45);return`rgb(${r},${g},${b})`}
+function shapeSVG(s,c){
+if(s==="Rund")return`<circle cx="300" cy="190" r="125" fill="${c}" opacity=".95"/>`;
+if(s==="Quadratisch")return`<rect x="175" y="65" width="250" height="250" rx="35" fill="${c}"/>`;
+if(s==="Sechseck")return`<polygon points="300,55 420,125 420,255 300,325 180,255 180,125" fill="${c}"/>`;
+if(s==="Schild")return`<path d="M170 70 L430 70 L430 210 Q430 290 300 335 Q170 290 170 210 Z" fill="${c}"/>`;
+return`<polygon points="300,45 445,190 300,335 155,190" fill="${c}"/>`}
+function createSVG(name,desc,style,shape,color,bg,index){
+let n=escapeXML(name||"LOGO"),d=escapeXML(desc||""),dark=darken(color),font="Arial";
+if(style==="Elegant")font="Georgia";if(style==="Gaming")font="Impact";if(style==="Cartoon")font="Comic Sans MS";if(style==="Minecraft")font="monospace";
+let icon="★";let low=d.toLowerCase();if(low.includes("blitz"))icon="⚡";else if(low.includes("stern"))icon="★";else if(low.includes("herz"))icon="♥";else if(low.includes("feuer"))icon="🔥";else if(low.includes("gaming"))icon="◈";else if(low.includes("computer"))icon="▣";else if(low.includes("ki"))icon="✦";
+let variant="";if(index===1)variant=`<circle cx="300" cy="190" r="95" fill="none" stroke="white" stroke-width="8"/>`;
+if(index===2)variant=`<path d="M210 270 L300 105 L390 270" fill="none" stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`;
+if(index===3)variant=`<circle cx="300" cy="190" r="22" fill="${dark}"/>`;
+return`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380"><rect width="600" height="380" rx="25" fill="${bg}"/>${shapeSVG(shape,index===0?color:dark)}${variant}<text x="300" y="205" text-anchor="middle" dominant-baseline="middle" font-family="${font}" font-size="${n.length>8?50:65}" font-weight="900" fill="white">${n}</text><text x="300" y="355" text-anchor="middle" font-family="Arial" font-size="14" fill="rgba(255,255,255,.7)">${style.toUpperCase()} • CONCEPT ${index+1}</text></svg>`}
+function generateLogos(){
+const name=document.getElementById("name").value.trim(),desc=document.getElementById("description").value.trim(),style=document.getElementById("style").value,shape=document.getElementById("shape").value,color=document.getElementById("color").value,bg=document.getElementById("background").value,results=document.getElementById("results"),status=document.getElementById("status");
+if(!name){alert("Bitte gib zuerst einen Namen ein.");return}status.innerText="🤖 KI erstellt 4 Logo-Konzepte ...";results.innerHTML="";
+setTimeout(()=>{for(let i=0;i<4;i++){let svg=createSVG(name,desc,style,shape,color,bg,i),card=document.createElement("div");card.className="logoCard";let img=document.createElement("div");img.innerHTML=svg;let title=document.createElement("div");title.className="logoName";title.innerText=name+" – Konzept "+(i+1);let info=document.createElement("div");info.className="small";info.innerText=style+" • "+shape;let buttons=document.createElement("div");buttons.className="cardButtons";let png=document.createElement("button");png.innerText="⬇️ PNG";png.onclick=()=>downloadPNG(svg,name+"-"+(i+1));let svgb=document.createElement("button");svgb.innerText="SVG";svgb.onclick=()=>downloadSVG(svg,name+"-"+(i+1));buttons.append(png,svgb);card.append(img,title,info,buttons);results.appendChild(card)}status.innerText="✅ 4 Logo-Konzepte wurden erstellt."},500)}
+function downloadSVG(svg,name){let blob=new Blob([svg],{type:"image/svg+xml"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name+".svg";a.click();URL.revokeObjectURL(url)}
+function downloadPNG(svg,name){let blob=new Blob([svg],{type:"image/svg+xml"}),url=URL.createObjectURL(blob),img=new Image();img.onload=()=>{let c=document.createElement("canvas");c.width=1200;c.height=760;c.getContext("2d").drawImage(img,0,0,1200,760);URL.revokeObjectURL(url);c.toBlob(png=>{let u=URL.createObjectURL(png),a=document.createElement("a");a.href=u;a.download=name+".png";a.click();URL.revokeObjectURL(u)},"image/png")};img.src=url}
+</script>
+</body>
+</html>
